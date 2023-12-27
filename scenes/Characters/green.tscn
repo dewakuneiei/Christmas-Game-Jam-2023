@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://bh20ukpo5uq1c"]
+
+[ext_resource type="PackedScene" uid="uid://c86cguhw14cjg" path="res://scenes/character.tscn" id="1_2jk8y"]
+[ext_resource type="Texture2D" uid="uid://d4nqrdhx0spgw" path="res://assets/characters/Green.png" id="2_hji1y"]
+
+[node name="Green" instance=ExtResource("1_2jk8y")]
+color_cult = Color(0, 0.835294, 0.0196078, 1)
+cult_team = 2
+
+[node name="CharacterSprite" parent="." index="0"]
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("2_hji1y")

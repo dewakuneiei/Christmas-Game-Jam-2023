@@ -1,10 +1,21 @@
-[gd_scene load_steps=8 format=3 uid="uid://bnnk8g50ucm35"]
+[gd_scene load_steps=14 format=3 uid="uid://bnnk8g50ucm35"]
 
 [ext_resource type="Script" path="res://scripts/game_manager.gd" id="1_eekye"]
 [ext_resource type="Script" path="res://scripts/camera_ctrl.gd" id="1_kb5an"]
-[ext_resource type="PackedScene" uid="uid://c86cguhw14cjg" path="res://scenes/character.tscn" id="2_m52mg"]
 [ext_resource type="Texture2D" uid="uid://d2du1enardc45" path="res://assets/Solaria Demo Update 01.png" id="3_ga80a"]
+[ext_resource type="PackedScene" uid="uid://cn2p814t7xud3" path="res://scenes/summon_ui.tscn" id="3_smoih"]
 [ext_resource type="PackedScene" uid="uid://j73boetj3325" path="res://scenes/tree_point.tscn" id="4_cnq05"]
+[ext_resource type="PackedScene" uid="uid://dnimab84wgu80" path="res://scenes/Characters/red.tscn" id="5_bqlnj"]
+[ext_resource type="PackedScene" uid="uid://1qiqax6twj8f" path="res://scenes/score_board_ui.tscn" id="6_yywu7"]
+[ext_resource type="PackedScene" uid="uid://b4s1wsv6slg5h" path="res://scenes/Characters/blue.tscn" id="7_keigc"]
+[ext_resource type="PackedScene" uid="uid://bh20ukpo5uq1c" path="res://scenes/Characters/green.tscn" id="8_7h6mx"]
+[ext_resource type="PackedScene" uid="uid://bwgk4u8gf2fau" path="res://scenes/Characters/black.tscn" id="9_ty3nl"]
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_vx7nj"]
+vertices = PackedVector2Array(790, 790, 10, 790, 10, 10, 790, 10)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(0, 0, 800, 0, 800, 800, 0, 800)])
+source_geometry_group_name = &"navigation_polygon_source_group"
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_cvfrt"]
 texture = ExtResource("3_ga80a")
@@ -373,25 +384,88 @@ texture = ExtResource("3_ga80a")
 [sub_resource type="TileSet" id="TileSet_4kxxc"]
 sources/0 = SubResource("TileSetAtlasSource_cvfrt")
 
-[node name="Game" type="Node2D"]
+[node name="Game" type="Node2D" node_paths=PackedStringArray("game_ui")]
 script = ExtResource("1_eekye")
+game_ui = NodePath("UI/ScoreBoard")
 parent_trees = NodePath("RootTree")
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="ScoreBoard" parent="UI" instance=ExtResource("6_yywu7")]
+
+[node name="SummonUI" parent="UI" instance=ExtResource("3_smoih")]
 
 [node name="main_cam" type="Camera2D" parent="."]
 script = ExtResource("1_kb5an")
 
+[node name="PathFinding" type="Node" parent="."]
+
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="PathFinding"]
+navigation_polygon = SubResource("NavigationPolygon_vx7nj")
+
 [node name="RootTree" type="Node" parent="."]
 
 [node name="TreePoint1" parent="RootTree" instance=ExtResource("4_cnq05")]
-position = Vector2(127, 237)
+position = Vector2(160, 168)
 
 [node name="TreePoint2" parent="RootTree" instance=ExtResource("4_cnq05")]
-position = Vector2(523, 188)
+position = Vector2(600, 168)
+
+[node name="TreePoint3" parent="RootTree" instance=ExtResource("4_cnq05")]
+position = Vector2(640, 656)
+
+[node name="TreePoint4" parent="RootTree" instance=ExtResource("4_cnq05")]
+position = Vector2(112, 656)
+
+[node name="TreePoint5" parent="RootTree" instance=ExtResource("4_cnq05")]
+position = Vector2(352, 464)
+
+[node name="TreePoint6" parent="RootTree" instance=ExtResource("4_cnq05")]
+position = Vector2(352, 336)
+
+[node name="TreePoint7" parent="RootTree" instance=ExtResource("4_cnq05")]
+position = Vector2(488, 336)
+
+[node name="TreePoint8" parent="RootTree" instance=ExtResource("4_cnq05")]
+position = Vector2(488, 456)
 
 [node name="unit" type="Node" parent="."]
 
-[node name="bot" parent="unit" instance=ExtResource("2_m52mg")]
-position = Vector2(30, 26)
+[node name="Red" parent="unit" instance=ExtResource("5_bqlnj")]
+position = Vector2(64, 64)
+
+[node name="Black" parent="unit" instance=ExtResource("9_ty3nl")]
+position = Vector2(728, 64)
+
+[node name="Black2" parent="unit" instance=ExtResource("9_ty3nl")]
+position = Vector2(520, 64)
+
+[node name="Black3" parent="unit" instance=ExtResource("9_ty3nl")]
+position = Vector2(704, 216)
+
+[node name="Red2" parent="unit" instance=ExtResource("5_bqlnj")]
+position = Vector2(40, 136)
+
+[node name="Red3" parent="unit" instance=ExtResource("5_bqlnj")]
+position = Vector2(168, 40)
+
+[node name="Blue" parent="unit" instance=ExtResource("7_keigc")]
+position = Vector2(40, 696)
+
+[node name="Blue2" parent="unit" instance=ExtResource("7_keigc")]
+position = Vector2(128, 760)
+
+[node name="Blue3" parent="unit" instance=ExtResource("7_keigc")]
+position = Vector2(216, 680)
+
+[node name="Green" parent="unit" instance=ExtResource("8_7h6mx")]
+position = Vector2(736, 736)
+
+[node name="Green2" parent="unit" instance=ExtResource("8_7h6mx")]
+position = Vector2(592, 752)
+
+[node name="Green3" parent="unit" instance=ExtResource("8_7h6mx")]
+position = Vector2(728, 616)
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = SubResource("TileSet_4kxxc")

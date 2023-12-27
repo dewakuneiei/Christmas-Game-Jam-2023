@@ -1,29 +1,145 @@
-[gd_scene load_steps=5 format=3 uid="uid://j73boetj3325"]
+[gd_scene load_steps=10 format=3 uid="uid://j73boetj3325"]
 
 [ext_resource type="Texture2D" uid="uid://d1vaqdwaitxaa" path="res://assets/tree.png" id="1_0wrn8"]
 [ext_resource type="Script" path="res://scripts/tree_point.gd" id="1_2shlo"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_i1q2c"]
-size = Vector2(10, 10)
+[ext_resource type="Texture2D" uid="uid://barn52gu21y1m" path="res://assets/circle_under.png" id="3_mfaph"]
+[ext_resource type="Texture2D" uid="uid://7ilqnyh8gpmk" path="res://assets/circle_fill.png" id="4_ibw03"]
+[ext_resource type="Texture2D" uid="uid://dqybskx0v6w75" path="res://icon.svg" id="5_xr727"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_1htu6"]
 radius = 34.1321
 
-[node name="TreePoint" type="StaticBody2D"]
+[sub_resource type="Animation" id="Animation_3c3m3"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("gift:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -40)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("gift:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("gift:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_6la7i"]
+resource_name = "fly"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("gift:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 0.012),
+"update": 0,
+"values": [Vector2(0, -40), Vector2(0, -90)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("gift:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 0.012),
+"update": 1,
+"values": [true, false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("gift:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.9),
+"transitions": PackedFloat32Array(1, 1, 0.012),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_2mfcr"]
+_data = {
+"RESET": SubResource("Animation_3c3m3"),
+"fly": SubResource("Animation_6la7i")
+}
+
+[node name="TreePoint" type="Node2D"]
 script = ExtResource("1_2shlo")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0.5, 0)
-shape = SubResource("RectangleShape2D_i1q2c")
-
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="TreeSprite" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+z_index = 10
 position = Vector2(0, -54)
 scale = Vector2(0.132812, 0.132812)
 texture = ExtResource("1_0wrn8")
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="EnteredArea" type="Area2D" parent="."]
+unique_name_in_owner = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EnteredArea"]
 shape = SubResource("CircleShape2D_1htu6")
 
-[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[node name="CircleProgress" type="TextureProgressBar" parent="."]
+unique_name_in_owner = true
+z_index = 20
+z_as_relative = false
+offset_left = -8.0
+offset_top = -33.0
+offset_right = 9.0
+offset_bottom = -16.0
+step = 0.1
+value = 45.0
+fill_mode = 4
+nine_patch_stretch = true
+texture_under = ExtResource("3_mfaph")
+texture_progress = ExtResource("4_ibw03")
+
+[node name="UpscoreCooldown" type="Timer" parent="."]
+unique_name_in_owner = true
+wait_time = 3.0
+one_shot = true
+
+[node name="gift" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -40)
+scale = Vector2(0.140625, 0.140625)
+texture = ExtResource("5_xr727")
+
+[node name="gftAnim" type="AnimationPlayer" parent="."]
+unique_name_in_owner = true
+libraries = {
+"": SubResource("AnimationLibrary_2mfcr")
+}
+
+[connection signal="body_exited" from="EnteredArea" to="." method="_on_entered_area_body_exited"]
+[connection signal="timeout" from="UpscoreCooldown" to="." method="_on_upscore_cooldown_timeout"]
