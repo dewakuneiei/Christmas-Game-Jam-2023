@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://c86cguhw14cjg" path="res://scenes/character.tscn" id="1_im22x"]
 [ext_resource type="Texture2D" uid="uid://cpukb31wu2ada" path="res://assets/characters/Red.png" id="2_l0wdd"]
 
-[node name="Red" instance=ExtResource("1_im22x")]
+[node name="Red" groups=["red"] instance=ExtResource("1_im22x")]
 color_cult = Color(0.894118, 0, 0, 1)
 cult_team = 1
 

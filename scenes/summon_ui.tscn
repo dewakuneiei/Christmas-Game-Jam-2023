@@ -1,4 +1,12 @@
-[gd_scene format=3 uid="uid://cn2p814t7xud3"]
+[gd_scene load_steps=8 format=3 uid="uid://cn2p814t7xud3"]
+
+[ext_resource type="Script" path="res://scripts/player_control.gd" id="1_lsv6r"]
+[ext_resource type="Theme" uid="uid://bxil1fj5iwj1y" path="res://Themes/easy_theme.tres" id="1_uwd35"]
+[ext_resource type="PackedScene" uid="uid://dnimab84wgu80" path="res://scenes/Characters/red.tscn" id="3_kmsax"]
+[ext_resource type="Texture2D" uid="uid://bediigr8wtx0g" path="res://assets/Frame/red_crop.png" id="3_wrlvl"]
+[ext_resource type="PackedScene" uid="uid://bh20ukpo5uq1c" path="res://scenes/Characters/green.tscn" id="4_nxlsx"]
+[ext_resource type="PackedScene" uid="uid://b4s1wsv6slg5h" path="res://scenes/Characters/blue.tscn" id="5_ejaog"]
+[ext_resource type="PackedScene" uid="uid://bwgk4u8gf2fau" path="res://scenes/Characters/black.tscn" id="6_fwlta"]
 
 [node name="SummonUI" type="Control"]
 layout_mode = 3
@@ -7,8 +15,65 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("1_uwd35")
+script = ExtResource("1_lsv6r")
+RedPackedScene = ExtResource("3_kmsax")
+GreenPackedScene = ExtResource("4_nxlsx")
+BluePackedScene = ExtResource("5_ejaog")
+BlackPackedScene = ExtResource("6_fwlta")
+red_texture = "res://assets/Frame/red_crop.png"
+green_texture = "res://assets/Frame/green_crop.png"
+blue_texture = "res://assets/Frame/blue_crop.png"
+black_texture = "res://assets/Frame/black_crop.png"
 
-[node name="Panel" type="Panel" parent="."]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.00666667
+anchor_top = 0.0133333
+anchor_right = 0.00666667
+anchor_bottom = 0.0133333
+offset_right = 192.0
+offset_bottom = 128.0
+metadata/_edit_use_anchors_ = true
+
+[node name="YourTeam" type="PanelContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/YourTeam"]
+layout_mode = 2
+
+[node name="player_texture" type="TextureRect" parent="VBoxContainer/YourTeam/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+texture = ExtResource("3_wrlvl")
+expand_mode = 2
+stretch_mode = 6
+
+[node name="CountTreeLabel" type="Label" parent="VBoxContainer/YourTeam/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 21
+text = "Count Tree"
+horizontal_alignment = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/PanelContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Can Summon:"
+
+[node name="able_summon_label" type="Label" parent="VBoxContainer/PanelContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 12
+text = "0"
+horizontal_alignment = 1

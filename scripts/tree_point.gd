@@ -24,6 +24,8 @@ var _body_color: Color = Color.WHITE
 var _body_team: CultTeam.Team;
 var _is_there_one_team: bool;
 
+const GROUP_NAME : StringName = "Tree"
+
 func _ready():
 	_gift.visible = false
 	reset_status()
@@ -102,6 +104,7 @@ func _process(delta):
 			was_capture_by(_body_team)
 			reset_status()
 			chang_unit_target()
+			
 	else:
 		reset_status()
 
@@ -118,7 +121,26 @@ func reset_status():
 
 func was_capture_by(newTeam: CultTeam.Team) -> void:
 	_tree_sprite.self_modulate = _body_color
-	_territory_team = newTeam  
+	_territory_team = newTeam 
+	
+	match _territory_team:
+		CultTeam.Team.RED:
+			remove_from_group("red"+GROUP_NAME)
+		CultTeam.Team.GREEN:
+			remove_from_group("green"+GROUP_NAME)
+		CultTeam.Team.BLUE:
+			remove_from_group("blue"+GROUP_NAME)
+		CultTeam.Team.BLACK:
+			remove_from_group("black"+GROUP_NAME)
+	match newTeam:
+		CultTeam.Team.RED:
+			add_to_group("red"+GROUP_NAME)
+		CultTeam.Team.GREEN:
+			add_to_group("green"+GROUP_NAME)
+		CultTeam.Team.BLUE:
+			add_to_group("blue"+GROUP_NAME)
+		CultTeam.Team.BLACK:
+			add_to_group("black"+GROUP_NAME)
 
 func get_territory_name() -> CultTeam.Team:
 	return _territory_team
@@ -131,3 +153,4 @@ func _on_entered_area_body_exited(body):
 
 func _on_upscore_cooldown_timeout():
 	_can_score_up = true
+

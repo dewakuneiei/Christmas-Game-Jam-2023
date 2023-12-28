@@ -22,6 +22,7 @@ class_name Character
 @onready var _throw_pos: Marker2D = %ThrowPos
 @onready var _hp_bar: TextureProgressBar = $HealthBar
 @onready var _character_sprite: Sprite2D = %CharacterSprite
+@onready var _player_anim: AnimationPlayer = %playerAnim
 
 enum Action {
 	NONE,
@@ -51,11 +52,15 @@ var _enemy_detected: Character;
 const speed_multipiler:= 100
 
 func take_damage(amount: int):
+	if( state_action == Action.DIED):
+		return
+	
 	_hp_bar.visible = true
 	_health = _health - amount
 	_hp_bar.value = _health
-	if(_health <= 1):
+	if(_health <= 0):
 		state_action = Action.DIED
+		_hp_bar.visible = false
 
 func set_ordering_index(index: int):
 	_character_sprite.z_index = index
@@ -116,6 +121,10 @@ func _seached_point():
 		
 
 func _process(delta):
+	
+	if(state_action == Action.DIED and not _player_anim.is_playing()):
+		_player_anim.play("died")
+		return;
 	if(_dir_to_target.x < 0):
 		_character_sprite.flip_h = true
 	else:
@@ -124,7 +133,6 @@ func _process(delta):
 
 func _physics_process(delta):
 	if(state_action == Action.DIED):
-		queue_free()
 		return;
 	
 	if(_tree_target == null):
@@ -205,8 +213,10 @@ func _on_nav_agent_velocity_computed(safe_velocity):
 
 func _on_area_2d_body_entered(body):
 	if body is Character:
-		if body.cult_team != cult_team:
+		if (body.cult_team != cult_team and body.state_action != Action.DIED):
 			_enemy_detected = body
+		else:
+			_enemy_detected = null
 
 func _on_area_2d_body_exited(body):
 	if body is Character:
@@ -216,3 +226,9 @@ func _on_area_2d_body_exited(body):
 
 func _on_throw_snow_cooldown_timeout():
 	_can_throw = true
+
+
+func _on_player_anim_animation_finished(anim_name):
+	if anim_name == "died":
+		await get_tree().create_timer(.5).timeout
+		queue_free()

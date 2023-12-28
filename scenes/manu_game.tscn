@@ -1,0 +1,89 @@
+[gd_scene load_steps=7 format=3 uid="uid://b1ooy5sregxl3"]
+
+[ext_resource type="Theme" uid="uid://bxil1fj5iwj1y" path="res://Themes/easy_theme.tres" id="1_0er8b"]
+[ext_resource type="Script" path="res://scripts/manu_game.gd" id="1_bd8ut"]
+[ext_resource type="Texture2D" uid="uid://bediigr8wtx0g" path="res://assets/Frame/red_crop.png" id="2_qg2ob"]
+[ext_resource type="Texture2D" uid="uid://chy6xeclmr2ka" path="res://assets/Frame/green_crop.png" id="3_qmu08"]
+[ext_resource type="Texture2D" uid="uid://c0hpbkmiw28av" path="res://assets/Frame/blue_crop.png" id="4_spjvc"]
+[ext_resource type="Texture2D" uid="uid://cb33ogvsiook2" path="res://assets/Frame/black_crop.png" id="5_drlo4"]
+
+[node name="ManuGame" type="Node2D"]
+script = ExtResource("1_bd8ut")
+scene_path = "res://scenes/game.tscn"
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="MainUI" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_0er8b")
+
+[node name="GridContainer" type="GridContainer" parent="CanvasLayer/MainUI"]
+clip_contents = true
+layout_direction = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -534.0
+offset_top = -220.0
+offset_right = 534.0
+offset_bottom = 220.0
+grow_horizontal = 2
+grow_vertical = 2
+columns = 4
+
+[node name="Red_btn" type="Button" parent="CanvasLayer/MainUI/GridContainer"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.54902, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 30
+text = "RED"
+icon = ExtResource("2_qg2ob")
+icon_alignment = 1
+vertical_icon_alignment = 0
+
+[node name="Green_btn" type="Button" parent="CanvasLayer/MainUI/GridContainer"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0.513726, 0.0117647, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 30
+text = "GREEN"
+icon = ExtResource("3_qmu08")
+icon_alignment = 1
+vertical_icon_alignment = 0
+
+[node name="Blue_btn" type="Button" parent="CanvasLayer/MainUI/GridContainer"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.176471, 0.533333, 0.819608, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 30
+text = "BLUE"
+icon = ExtResource("4_spjvc")
+icon_alignment = 1
+vertical_icon_alignment = 0
+
+[node name="Black_btn" type="Button" parent="CanvasLayer/MainUI/GridContainer"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.113725, 0.113725, 0.113725, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 30
+text = "BLACK"
+icon = ExtResource("5_drlo4")
+icon_alignment = 1
+vertical_icon_alignment = 0
+
+[connection signal="pressed" from="CanvasLayer/MainUI/GridContainer/Red_btn" to="." method="_on_red_btn_pressed"]
+[connection signal="pressed" from="CanvasLayer/MainUI/GridContainer/Green_btn" to="." method="_on_green_btn_pressed"]
+[connection signal="pressed" from="CanvasLayer/MainUI/GridContainer/Blue_btn" to="." method="_on_blue_btn_pressed"]
+[connection signal="pressed" from="CanvasLayer/MainUI/GridContainer/Black_btn" to="." method="_on_black_btn_pressed"]
