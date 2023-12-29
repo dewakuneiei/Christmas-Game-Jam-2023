@@ -1,51 +1,52 @@
-[gd_scene load_steps=10 format=3 uid="uid://j73boetj3325"]
+[gd_scene load_steps=11 format=3 uid="uid://j73boetj3325"]
 
-[ext_resource type="Texture2D" uid="uid://d1vaqdwaitxaa" path="res://assets/tree.png" id="1_0wrn8"]
 [ext_resource type="Script" path="res://scripts/tree_point.gd" id="1_2shlo"]
+[ext_resource type="Texture2D" uid="uid://bvvk4lq5ey75e" path="res://assets/T.png" id="2_7j58v"]
+[ext_resource type="Texture2D" uid="uid://d017svvkdfmq5" path="res://assets/flag.png" id="3_gkp88"]
 [ext_resource type="Texture2D" uid="uid://barn52gu21y1m" path="res://assets/circle_under.png" id="3_mfaph"]
 [ext_resource type="Texture2D" uid="uid://7ilqnyh8gpmk" path="res://assets/circle_fill.png" id="4_ibw03"]
-[ext_resource type="Texture2D" uid="uid://dqybskx0v6w75" path="res://icon.svg" id="5_xr727"]
+[ext_resource type="Texture2D" uid="uid://ljfjnwfcxfyp" path="res://assets/Present.png" id="5_eykuf"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_1htu6"]
-radius = 34.1321
+radius = 61.4003
 
 [sub_resource type="Animation" id="Animation_3c3m3"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("gift:position")
+tracks/0/path = NodePath("TreeSprite/gift:visible")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0, -40)]
+"update": 1,
+"values": [true]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("gift:visible")
+tracks/1/path = NodePath("TreeSprite/gift:modulate")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("gift:modulate")
+tracks/2/path = NodePath("TreeSprite/gift:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Color(1, 1, 1, 1)]
+"values": [Vector2(0, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_6la7i"]
@@ -53,38 +54,38 @@ resource_name = "fly"
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("gift:position")
+tracks/0/path = NodePath("TreeSprite/gift:visible")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0, 1),
 "transitions": PackedFloat32Array(0.3, 1),
-"update": 0,
-"values": [Vector2(0, -40), Vector2(0, -90)]
+"update": 1,
+"values": [true, false]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("gift:visible")
+tracks/1/path = NodePath("TreeSprite/gift:modulate")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(0.3, 1),
-"update": 1,
-"values": [true, false]
+"transitions": PackedFloat32Array(13.5764, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0.0196078)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("gift:modulate")
+tracks/2/path = NodePath("TreeSprite/gift:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
 "times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(0.3, 1),
+"transitions": PackedFloat32Array(0.189464, 1),
 "update": 0,
-"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0.25098)]
+"values": [Vector2(0, 0), Vector2(0, -200)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_2mfcr"]
@@ -97,11 +98,22 @@ _data = {
 script = ExtResource("1_2shlo")
 
 [node name="TreeSprite" type="Sprite2D" parent="."]
+z_index = 10
+position = Vector2(0, -31)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("2_7j58v")
+
+[node name="FlagSprite" type="Sprite2D" parent="TreeSprite"]
+unique_name_in_owner = true
+position = Vector2(0, 233.413)
+texture = ExtResource("3_gkp88")
+
+[node name="gift" type="Sprite2D" parent="TreeSprite"]
 unique_name_in_owner = true
 z_index = 10
-position = Vector2(0, -54)
-scale = Vector2(0.132812, 0.132812)
-texture = ExtResource("1_0wrn8")
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("5_eykuf")
+offset = Vector2(0, -97.3261)
 
 [node name="EnteredArea" type="Area2D" parent="."]
 unique_name_in_owner = true
@@ -128,13 +140,6 @@ texture_progress = ExtResource("4_ibw03")
 unique_name_in_owner = true
 wait_time = 5.0
 one_shot = true
-
-[node name="gift" type="Sprite2D" parent="."]
-unique_name_in_owner = true
-z_index = 10
-position = Vector2(0, -40)
-scale = Vector2(0.140625, 0.140625)
-texture = ExtResource("5_xr727")
 
 [node name="gftAnim" type="AnimationPlayer" parent="."]
 unique_name_in_owner = true

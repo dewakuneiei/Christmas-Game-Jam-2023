@@ -1,43 +1,14 @@
-[gd_scene load_steps=11 format=3 uid="uid://c86cguhw14cjg"]
+[gd_scene load_steps=16 format=3 uid="uid://c86cguhw14cjg"]
 
 [ext_resource type="Script" path="res://scripts/character.gd" id="1_4bwgc"]
 [ext_resource type="Texture2D" uid="uid://dqybskx0v6w75" path="res://icon.svg" id="1_yv33l"]
 [ext_resource type="PackedScene" uid="uid://b2wvcqbnfgf3l" path="res://scenes/snow_ball.tscn" id="2_gx1dw"]
 [ext_resource type="Texture2D" uid="uid://c67wq841qd08s" path="res://assets/rect_under.png" id="4_w7wf4"]
 [ext_resource type="Texture2D" uid="uid://m0ldl3udo3j0" path="res://assets/rect_fill.png" id="5_7aix4"]
+[ext_resource type="Texture2D" uid="uid://dl0w4dpnngm58" path="res://assets/down_arrow.png" id="6_02x42"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5u1q3"]
 size = Vector2(32, 32)
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_48o3k"]
-radius = 90.0
-
-[sub_resource type="Animation" id="Animation_voac0"]
-resource_name = "died"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("CharacterSprite:skew")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(0.12, 12),
-"update": 0,
-"values": [0.0, -1.3439]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("CharacterSprite:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(0.12, 12),
-"update": 0,
-"values": [Vector2(0, -16), Vector2(0, 0.7)]
-}
 
 [sub_resource type="Animation" id="Animation_b0v0f"]
 length = 0.001
@@ -66,22 +37,92 @@ tracks/1/keys = {
 "values": [Vector2(0, -16)]
 }
 
+[sub_resource type="Animation" id="Animation_voac0"]
+resource_name = "died"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CharacterSprite:skew")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.12, 12),
+"update": 0,
+"values": [0.0, -1.3439]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CharacterSprite:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.12, 12),
+"update": 0,
+"values": [Vector2(0, -16), Vector2(0, 0.7)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_l4yaw"]
 _data = {
 "RESET": SubResource("Animation_b0v0f"),
 "died": SubResource("Animation_voac0")
 }
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_48o3k"]
+radius = 90.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7s41s"]
+size = Vector2(38, 41)
+
+[sub_resource type="Animation" id="Animation_jcii8"]
+resource_name = "was_selected"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, -50), Vector2(0, -35), Vector2(0, -50)]
+}
+
+[sub_resource type="Animation" id="Animation_kdlqu"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -55)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_bt8be"]
+_data = {
+"RESET": SubResource("Animation_kdlqu"),
+"was_selected": SubResource("Animation_jcii8")
+}
+
 [node name="Character" type="CharacterBody2D"]
+collision_mask = 2
 motion_mode = 1
 wall_min_slide_angle = 0.0
 script = ExtResource("1_4bwgc")
 snowball = ExtResource("2_gx1dw")
-captured_dist = 50.0
-move_speed = 40.0
 
 [node name="CharacterSprite" type="Sprite2D" parent="."]
 unique_name_in_owner = true
+process_priority = 1
 z_index = 20
 position = Vector2(0, -16)
 scale = Vector2(0.25, 0.25)
@@ -95,14 +136,6 @@ shape = SubResource("RectangleShape2D_5u1q3")
 unique_name_in_owner = true
 avoidance_enabled = true
 radius = 20.0
-debug_enabled = true
-
-[node name="Area2D" type="Area2D" parent="."]
-visible = false
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-shape = SubResource("CircleShape2D_48o3k")
-debug_color = Color(0.619608, 0.52549, 0.313726, 0.419608)
 
 [node name="ThrowSnowCooldown" type="Timer" parent="."]
 unique_name_in_owner = true
@@ -134,8 +167,39 @@ libraries = {
 "": SubResource("AnimationLibrary_l4yaw")
 }
 
+[node name="Area2D" type="Area2D" parent="."]
+position = Vector2(0, -16)
+input_pickable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_48o3k")
+debug_color = Color(0.619608, 0.52549, 0.313726, 0.419608)
+
+[node name="AreaDetectedMouse" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AreaDetectedMouse"]
+position = Vector2(0, -17.5)
+shape = SubResource("RectangleShape2D_7s41s")
+debug_color = Color(0.964706, 0, 0.482353, 0)
+
+[node name="Selection" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+z_index = 100
+texture_filter = 1
+position = Vector2(0, -55)
+scale = Vector2(2, 2)
+texture = ExtResource("6_02x42")
+
+[node name="SelectionAnim" type="AnimationPlayer" parent="Selection"]
+libraries = {
+"": SubResource("AnimationLibrary_bt8be")
+}
+autoplay = "was_selected"
+
 [connection signal="velocity_computed" from="NavAgent" to="." method="_on_nav_agent_velocity_computed"]
-[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
-[connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]
 [connection signal="timeout" from="ThrowSnowCooldown" to="." method="_on_throw_snow_cooldown_timeout"]
 [connection signal="animation_finished" from="playerAnim" to="." method="_on_player_anim_animation_finished"]
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]
+[connection signal="mouse_entered" from="AreaDetectedMouse" to="." method="_on_area_detected_mouse_entered"]
+[connection signal="mouse_exited" from="AreaDetectedMouse" to="." method="_on_area_detected_mouse_exited"]

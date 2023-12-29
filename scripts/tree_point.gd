@@ -2,8 +2,7 @@ extends Node2D
 class_name TreePoint
 
 @export var _territory_team: CultTeam.Team
-
-@onready var _tree_sprite: Sprite2D = %TreeSprite
+@onready var _flag_sprite: Sprite2D = %FlagSprite
 @onready var _entered_area: Area2D = %EnteredArea
 @onready var _cicle_progr: TextureProgressBar = %CircleProgress
 @onready var _upscore_cooldown: Timer = %UpscoreCooldown
@@ -28,6 +27,7 @@ const GROUP_NAME : StringName = "Tree"
 
 func _ready():
 	_gift.visible = false
+	_flag_sprite.visible = false
 	reset_status()
 	check_overlaping()
 
@@ -68,7 +68,8 @@ func check_overlaping():
 			# change all action status of all unit is captured
 			if(_is_there_one_team):
 				for unit in characters:
-					unit.change_state_to_capture()
+					if( not unit.is_under_command() and _territory_team != unit.cult_team):
+						unit.change_state_to_capture()
 		await get_tree().create_timer(.2).timeout
 		
 
@@ -85,6 +86,7 @@ func count_score_up():
 
 
 func _process(delta):
+	
 	if(_territory_team != CultTeam.Team.NONE and _can_score_up):
 		count_score_up()
 		_anim_player.play("fly")
@@ -103,12 +105,12 @@ func _process(delta):
 		if(_cicle_progr.value >= _target_time):
 			was_capture_by(_body_team)
 			reset_status()
-			chang_unit_target()
+			change_unit_target()
 			
 	else:
 		reset_status()
 
-func chang_unit_target():
+func change_unit_target():
 	for unit: Character in _entered_area.get_overlapping_bodies() as Array[Character]:
 		unit.reset_target()
 
@@ -120,7 +122,8 @@ func reset_status():
 	_my_timer = 0
 
 func was_capture_by(newTeam: CultTeam.Team) -> void:
-	_tree_sprite.self_modulate = _body_color
+	_flag_sprite.visible = true
+	_flag_sprite.self_modulate = _body_color
 	_territory_team = newTeam 
 	
 	match _territory_team:

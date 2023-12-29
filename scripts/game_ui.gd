@@ -22,6 +22,7 @@ func _ready():
 	if(path_texture_3 != null):texture_3.texture = path_texture_3
 	if(path_texture_4 != null):texture_4.texture = path_texture_4
 	
+	mouse_filter = Control.MOUSE_FILTER_IGNORE	
 
 func update_label_1(text: String):
 	label_1.text = text
