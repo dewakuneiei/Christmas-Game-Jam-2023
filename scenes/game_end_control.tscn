@@ -1,7 +1,12 @@
-[gd_scene load_steps=3 format=3 uid="uid://dxg7oc5ymf7d5"]
+[gd_scene load_steps=8 format=3 uid="uid://dxg7oc5ymf7d5"]
 
 [ext_resource type="Theme" uid="uid://bxil1fj5iwj1y" path="res://Themes/easy_theme.tres" id="1_6u1lk"]
-[ext_resource type="PackedScene" uid="uid://b7h6ipmlqgkej" path="res://scenes/data_card.tscn" id="2_c0br5"]
+[ext_resource type="Script" path="res://scripts/game_end_control.gd" id="2_ixna4"]
+[ext_resource type="Texture2D" uid="uid://bediigr8wtx0g" path="res://assets/Frame/red_crop.png" id="2_wj7mg"]
+[ext_resource type="Texture2D" uid="uid://ljfjnwfcxfyp" path="res://assets/Present.png" id="4_bilkw"]
+[ext_resource type="Texture2D" uid="uid://chy6xeclmr2ka" path="res://assets/Frame/green_crop.png" id="5_tated"]
+[ext_resource type="Texture2D" uid="uid://c0hpbkmiw28av" path="res://assets/Frame/blue_crop.png" id="6_j2lyk"]
+[ext_resource type="Texture2D" uid="uid://cb33ogvsiook2" path="res://assets/Frame/black_crop.png" id="7_d7q7b"]
 
 [node name="GameEndCOntrol" type="Control"]
 layout_mode = 3
@@ -11,6 +16,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_6u1lk")
+script = ExtResource("2_ixna4")
+scene_path = "res://scenes/manu_game.tscn"
 
 [node name="Panel" type="Panel" parent="."]
 modulate = Color(1, 1, 1, 0.352941)
@@ -28,26 +35,176 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -167.0
-offset_top = -194.0
-offset_right = 167.0
-offset_bottom = 194.0
+offset_left = -200.0
+offset_top = -120.0
+offset_right = 200.0
+offset_bottom = 120.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 12
 
-[node name="First" parent="VBoxContainer" instance=ExtResource("2_c0br5")]
+[node name="Winner" type="PanelContainer" parent="VBoxContainer"]
 layout_mode = 2
 
-[node name="First2" parent="VBoxContainer" instance=ExtResource("2_c0br5")]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Winner"]
 layout_mode = 2
 
-[node name="First3" parent="VBoxContainer" instance=ExtResource("2_c0br5")]
+[node name="profile" type="TextureRect" parent="VBoxContainer/Winner/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+texture = ExtResource("2_wj7mg")
+expand_mode = 2
+stretch_mode = 6
+
+[node name="Label" type="Label" parent="VBoxContainer/Winner/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "WINNER"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GridContainer" type="GridContainer" parent="VBoxContainer"]
+layout_mode = 2
+columns = 2
+
+[node name="Red" type="PanelContainer" parent="VBoxContainer/GridContainer"]
 layout_mode = 2
 
-[node name="First4" parent="VBoxContainer" instance=ExtResource("2_c0br5")]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/GridContainer/Red"]
 layout_mode = 2
+
+[node name="profile" type="TextureRect" parent="VBoxContainer/GridContainer/Red/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("2_wj7mg")
+expand_mode = 2
+stretch_mode = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/GridContainer/Red/HBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/GridContainer/Red/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="GiftCount" type="Label" parent="VBoxContainer/GridContainer/Red/HBoxContainer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "56"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/GridContainer/Red/HBoxContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+texture = ExtResource("4_bilkw")
+expand_mode = 2
+stretch_mode = 6
+
+[node name="Green" type="PanelContainer" parent="VBoxContainer/GridContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/GridContainer/Green"]
+layout_mode = 2
+
+[node name="profile" type="TextureRect" parent="VBoxContainer/GridContainer/Green/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("5_tated")
+expand_mode = 2
+stretch_mode = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/GridContainer/Green/HBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/GridContainer/Green/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="GiftCount2" type="Label" parent="VBoxContainer/GridContainer/Green/HBoxContainer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "56"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/GridContainer/Green/HBoxContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+texture = ExtResource("4_bilkw")
+expand_mode = 2
+stretch_mode = 6
+
+[node name="Blue" type="PanelContainer" parent="VBoxContainer/GridContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/GridContainer/Blue"]
+layout_mode = 2
+
+[node name="profile" type="TextureRect" parent="VBoxContainer/GridContainer/Blue/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("6_j2lyk")
+expand_mode = 2
+stretch_mode = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/GridContainer/Blue/HBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/GridContainer/Blue/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="GiftCount3" type="Label" parent="VBoxContainer/GridContainer/Blue/HBoxContainer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "56"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/GridContainer/Blue/HBoxContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+texture = ExtResource("4_bilkw")
+expand_mode = 2
+stretch_mode = 6
+
+[node name="Black" type="PanelContainer" parent="VBoxContainer/GridContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/GridContainer/Black"]
+layout_mode = 2
+
+[node name="profile" type="TextureRect" parent="VBoxContainer/GridContainer/Black/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("7_d7q7b")
+expand_mode = 2
+stretch_mode = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/GridContainer/Black/HBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/GridContainer/Black/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="GiftCount4" type="Label" parent="VBoxContainer/GridContainer/Black/HBoxContainer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "56"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/GridContainer/Black/HBoxContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+texture = ExtResource("4_bilkw")
+expand_mode = 2
+stretch_mode = 6
 
 [node name="AgainBtn" type="Button" parent="VBoxContainer"]
+layout_direction = 1
 layout_mode = 2
-text = "Again"
+auto_translate = false
+localize_numeral_system = false
+theme_override_font_sizes/font_size = 21
+text = "AGAIN"
+
+[connection signal="pressed" from="VBoxContainer/AgainBtn" to="." method="_on_again_btn_pressed"]

@@ -138,7 +138,7 @@ texture_progress = ExtResource("4_ibw03")
 
 [node name="UpscoreCooldown" type="Timer" parent="."]
 unique_name_in_owner = true
-wait_time = 5.0
+wait_time = 12.0
 one_shot = true
 
 [node name="gftAnim" type="AnimationPlayer" parent="."]

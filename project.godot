@@ -10,20 +10,20 @@ config_version=5
 
 [application]
 
-config/name="new-year-2024"
+config/name="Padoru's Gift"
 run/main_scene="res://scenes/manu_game.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
-config/icon="res://icon.svg"
+config/icon="res://icon_game.png"
 
 [autoload]
 
 PlayerSingleton="*res://scripts/player_singleton.gd"
+BackgroundMusic="*res://scenes/background_music.tscn"
 
 [display]
 
 window/size/viewport_width=1200
 window/size/viewport_height=600
-window/size/mode=2
 
 [input]
 
@@ -67,7 +67,15 @@ selected_unit={
 ]
 }
 
+[input_devices]
+
+pointing/emulate_touch_from_mouse=true
+
 [layer_names]
 
 2d_physics/layer_1="Objects"
 2d_physics/layer_2="Obstacles"
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"

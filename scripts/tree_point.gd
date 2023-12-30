@@ -9,11 +9,13 @@ class_name TreePoint
 @onready var _anim_player: AnimationPlayer = %gftAnim
 @onready var _gift: Sprite2D = %gift
 
+var game_manager: GameManager;
+
 # Timer
 var _my_timer: float = 0;
 var _target_time: float = 12;
-var max_capture_rate: float = 1
-var base_capture_rate: float = 0.3
+var max_capture_rate: float = .5
+var base_capture_rate: float = 0.15
 
 var _can_score_up: bool = true
 
@@ -26,6 +28,8 @@ var _is_there_one_team: bool;
 const GROUP_NAME : StringName = "Tree"
 
 func _ready():
+	game_manager = GameManager.instance
+	
 	_gift.visible = false
 	_flag_sprite.visible = false
 	reset_status()
@@ -35,6 +39,8 @@ func _ready():
 func check_overlaping():
 	var bodies: Array
 	while true :
+		if(game_manager.is_game_ended):
+			break;
 		# Get bodies was entered this area and Character class_name filering
 		bodies = _entered_area.get_overlapping_bodies()
 		var characters : Array[Character] = []
@@ -71,7 +77,8 @@ func check_overlaping():
 					if( not unit.is_under_command() and _territory_team != unit.cult_team):
 						unit.change_state_to_capture()
 		await get_tree().create_timer(.2).timeout
-		
+	
+	reset_status()
 
 func count_score_up():
 	match _territory_team:
@@ -86,6 +93,9 @@ func count_score_up():
 
 
 func _process(delta):
+	if(game_manager.is_game_ended):
+		return;
+	
 	
 	if(_territory_team != CultTeam.Team.NONE and _can_score_up):
 		count_score_up()
@@ -113,6 +123,7 @@ func _process(delta):
 func change_unit_target():
 	for unit: Character in _entered_area.get_overlapping_bodies() as Array[Character]:
 		unit.reset_target()
+		unit.play_padoru_padoru()
 
 func reset_status():
 	_cicle_progr.visible = false

@@ -22,6 +22,8 @@ class_name Character
 @onready var _character_sprite: Sprite2D = %CharacterSprite
 @onready var _player_anim: AnimationPlayer = %playerAnim
 @onready var _selection_sprite: Sprite2D = %Selection
+@onready var _stream_player: AudioStreamPlayer2D = %StreamPlayer
+
 
 enum Action {
 	NONE,
@@ -40,7 +42,7 @@ var rng = RandomNumberGenerator.new()
 var _captured_dist: float = 5.0
 
 # Status updated
-var is_fight_mode: bool = false;
+#var is_fight_mode: bool = false;
 var move_speed: float = 40;
 
 var _health: int
@@ -52,9 +54,14 @@ var _tree_target: TreePoint;
 var _can_throw: bool = true;
 var _enemy_detected: Character;
 
-
-
-const speed_multipiler:= 100
+#Auidos
+const hit_body_audio_stream : Array[AudioStream]= [
+	preload("res://assets/sound/hit1.mp3"),
+	preload("res://assets/sound/hit2.mp3"),
+]
+const PADORU_PADORU: AudioStream = preload("res://assets/sound/PadoruPadoru_sfx.mp3")
+const PADORU: AudioStream = preload("res://assets/sound/Padoru_sfx.mp3")
+const SPEED_MULTIPILER:= 100
 
 # Player command on this character
 var can_selected: bool = false;
@@ -64,16 +71,36 @@ var has_been_clicked: bool = false;
 
 var _flag_target: Sprite2D;
 
+func _played_random_sound():
+	var size = hit_body_audio_stream.size()
+	if(size == 0):
+		return;
+	
+	var rand_num = rng.randi_range(0, size - 1)
+	_stream_player.stream = hit_body_audio_stream[rand_num]
+	_stream_player.play()
+
+func play_padoru_padoru():
+	_stream_player.stream = PADORU_PADORU
+	_stream_player.play()
+
 func take_damage(amount: int):
 	if( state_action == Action.DIED):
 		return
+	
+	_played_random_sound()
 	
 	_hp_bar.visible = true
 	_health = _health - amount
 	_hp_bar.value = _health
 	if(_health <= 0):
-		state_action = Action.DIED
-		_hp_bar.visible = false
+		Died()
+
+func Died():
+	state_action = Action.DIED
+	_hp_bar.visible = false
+	_stream_player.stream = PADORU
+	_stream_player.play()
 
 func set_ordering_index(index: int):
 	_character_sprite.z_index = index
@@ -135,6 +162,9 @@ func _seached_point():
 		
 
 func _process(delta):
+	if(game_manager.is_game_ended):
+		return;
+	
 	
 	if( can_selected and 
 		Input.is_action_just_pressed("selected_unit") and 
@@ -169,7 +199,7 @@ func _physics_process(delta):
 		_nav_agent.target_position = target_command_point
 		_dir_to_target = global_position.direction_to(_nav_agent.get_next_path_position())
 	
-		var intended_velocity = _dir_to_target * move_speed * speed_multipiler
+		var intended_velocity = _dir_to_target * move_speed * SPEED_MULTIPILER
 		_nav_agent.velocity = intended_velocity * delta
 		
 		var dist_to_command_point = global_position.distance_to(target_command_point)
@@ -187,13 +217,14 @@ func _physics_process(delta):
 	
 	var target_pos = _tree_target.global_position
 	
-	if _enemy_detected != null:
+	if (_enemy_detected != null and 
+		_enemy_detected.state_action != Action.DIED):
 		if(_can_throw): throw_snowball()
 		_nav_agent.velocity = Vector2.ZERO
-		is_fight_mode = true;
+		#is_fight_mode = true;
 		return;
-	else :
-		is_fight_mode = false;
+	#else :
+		#is_fight_mode = false;
 
 	if (state_action == Action.CAPTURING):
 		# Stop movement if capturing
@@ -208,7 +239,7 @@ func _physics_process(delta):
 	_nav_agent.target_position = target_pos
 	_dir_to_target = global_position.direction_to(_nav_agent.get_next_path_position())
 	
-	var intended_velocity = _dir_to_target * move_speed * speed_multipiler
+	var intended_velocity = _dir_to_target * move_speed * SPEED_MULTIPILER
 	_nav_agent.velocity = intended_velocity * delta
 #endregion
 
@@ -284,8 +315,6 @@ func _get_commander(pos: Vector2):
 	flag_sprite_new.scale = Vector2.ONE * .25
 	_flag_target = flag_sprite_new
 	add_child(_flag_target)
-
-
 
 
 

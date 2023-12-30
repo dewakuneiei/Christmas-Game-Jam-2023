@@ -12,6 +12,11 @@ const GREEN_BASE = preload("res://assets/HG.png")
 const BLUE_BASE = preload("res://assets/HBlue.png")
 const BLACK_BASE = preload("res://assets/HB.png")
 
+const RED_FRAME = preload("res://assets/Frame/red_crop.png")
+const GREEN_FRAME = preload("res://assets/Frame/green_crop.png")
+const BLUE_FRAME = preload("res://assets/Frame/blue_crop.png")
+const BLACK_FRAME = preload("res://assets/Frame/black_crop.png")
+
 const FLAG = preload("res://assets/flag.png")
 
 func set_player_team(team: CultTeam.Team):

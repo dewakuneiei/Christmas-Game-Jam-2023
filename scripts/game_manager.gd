@@ -7,12 +7,15 @@ static var instance: GameManager;
 @export var game_ui: ScoreBoardUI;
 @export var parent_trees: NodePath
 @export var all_points: Array[TreePoint]
+@export var game_ended_ui: GameEndedUI;
 
 @export_subgroup("Character Settings")
-@export var red_max_amout: int = 3;
-@export var green_max_amout: int = 3;
-@export var blue_max_amout: int = 3;
-@export var black_max_amout: int = 3;
+@export var red_max_amount: int = 3;
+@export var green_max_amount: int = 3;
+@export var blue_max_amount: int = 3;
+@export var black_max_amount: int = 3;
+
+
 
 @export_subgroup("Game Setting")
 @export var end_at_point: int = 10 
@@ -36,16 +39,27 @@ var _red_score: int;
 var _green_score: int;
 var _black_score: int;
 
+### for calculate amount of cult additional
+var cur_red_max_amount: int;
+var cur_green_max_amount: int;
+var cur_blue_max_amount: int;
+var cur_black_max_amount: int;
+
 func ended_game():
 	is_game_ended = true;
-	print("game is ended")
-
+	game_ended_ui.visible = true
+	game_ended_ui.set_red_text(_red_score)
+	game_ended_ui.set_green_text(_green_score)
+	game_ended_ui.set_blue_text(_blue_score)
+	game_ended_ui.set_black_text(_black_score)
+	
 
 func add_red_score():
 	_red_score += 1;
 	game_ui.update_label_1(str(_red_score))
 	
 	if(_red_score >= end_at_point):
+		game_ended_ui.who_is_winner(CultTeam.Team.RED)
 		ended_game()
 
 func add_green_score():
@@ -53,6 +67,7 @@ func add_green_score():
 	game_ui.update_label_2(str(_green_score))
 	
 	if(_green_score >= end_at_point):
+		game_ended_ui.who_is_winner(CultTeam.Team.GREEN)
 		ended_game()
 
 func add_blue_score():
@@ -60,6 +75,7 @@ func add_blue_score():
 	game_ui.update_label_3(str(_blue_score))
 	
 	if(_blue_score >= end_at_point):
+		game_ended_ui.who_is_winner(CultTeam.Team.BLUE)
 		ended_game()
 
 func add_black_score():
@@ -67,9 +83,19 @@ func add_black_score():
 	game_ui.update_label_4(str(_black_score))
 	
 	if(_black_score >= end_at_point):
+		game_ended_ui.who_is_winner(CultTeam.Team.BLACK)
 		ended_game()
 
 func _ready():
+	
+	cur_red_max_amount = red_max_amount
+	cur_green_max_amount = green_max_amount
+	cur_blue_max_amount = blue_max_amount
+	cur_black_max_amount = black_max_amount
+	
+	BackgroundMusic.play()
+	
+	game_ended_ui.visible = false;
 	_check_population()
 	_load_all_tree_point()
 
@@ -81,6 +107,9 @@ func _load_all_tree_point():
 
 func _check_population():
 	while true :
+		if(is_game_ended):
+			break;
+		
 		red_cult_amount = get_tree().get_nodes_in_group("red").size()
 		blue_cult_amount = get_tree().get_nodes_in_group("blue").size()
 		green_cult_amount = get_tree().get_nodes_in_group("green").size()
@@ -91,9 +120,13 @@ func _check_population():
 		count_blue_tree = get_tree().get_nodes_in_group("blueTree").size()
 		count_black_tree = get_tree().get_nodes_in_group("blackTree").size()
 		
+		### update max population
+		cur_red_max_amount = floor(red_max_amount + (count_red_tree * 0.9))
+		cur_green_max_amount = floor(green_max_amount + (count_green_tree))
+		cur_blue_max_amount = floor(blue_max_amount + (count_blue_tree * 0.9))
+		cur_black_max_amount = floor(black_max_amount + (count_black_tree * .9))
 		
 		await get_tree().create_timer(.2).timeout
-
 
 func _init():
 	self.instance = self

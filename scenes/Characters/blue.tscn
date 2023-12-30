@@ -4,6 +4,8 @@
 [ext_resource type="Texture2D" uid="uid://d2woqvyiwscfv" path="res://assets/characters/Blue.png" id="2_e5p25"]
 
 [node name="Blue" groups=["blue"] instance=ExtResource("1_rh3c0")]
+max_health = 15
+strength = 3
 color_cult = Color(0.219608, 0.65098, 1, 1)
 cult_team = 3
 

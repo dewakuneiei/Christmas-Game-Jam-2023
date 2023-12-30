@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://b1ooy5sregxl3"]
+[gd_scene load_steps=8 format=3 uid="uid://b1ooy5sregxl3"]
 
 [ext_resource type="Theme" uid="uid://bxil1fj5iwj1y" path="res://Themes/easy_theme.tres" id="1_0er8b"]
 [ext_resource type="Script" path="res://scripts/manu_game.gd" id="1_bd8ut"]
 [ext_resource type="Texture2D" uid="uid://bediigr8wtx0g" path="res://assets/Frame/red_crop.png" id="2_qg2ob"]
 [ext_resource type="Texture2D" uid="uid://chy6xeclmr2ka" path="res://assets/Frame/green_crop.png" id="3_qmu08"]
+[ext_resource type="Texture2D" uid="uid://cggtju4dqhwj7" path="res://group.png" id="3_wwmij"]
 [ext_resource type="Texture2D" uid="uid://c0hpbkmiw28av" path="res://assets/Frame/blue_crop.png" id="4_spjvc"]
 [ext_resource type="Texture2D" uid="uid://cb33ogvsiook2" path="res://assets/Frame/black_crop.png" id="5_drlo4"]
 
@@ -22,7 +23,19 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_0er8b")
 
-[node name="GridContainer" type="GridContainer" parent="CanvasLayer/MainUI"]
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/MainUI"]
+modulate = Color(1, 1, 1, 0.196078)
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_wwmij")
+
+[node name="ChoosedColor" type="GridContainer" parent="CanvasLayer/MainUI"]
+unique_name_in_owner = true
 clip_contents = true
 layout_direction = 1
 layout_mode = 1
@@ -39,7 +52,7 @@ grow_horizontal = 2
 grow_vertical = 2
 columns = 4
 
-[node name="Red_btn" type="Button" parent="CanvasLayer/MainUI/GridContainer"]
+[node name="Red_btn" type="Button" parent="CanvasLayer/MainUI/ChoosedColor"]
 custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.54902, 0, 0, 1)
@@ -50,7 +63,7 @@ icon = ExtResource("2_qg2ob")
 icon_alignment = 1
 vertical_icon_alignment = 0
 
-[node name="Green_btn" type="Button" parent="CanvasLayer/MainUI/GridContainer"]
+[node name="Green_btn" type="Button" parent="CanvasLayer/MainUI/ChoosedColor"]
 custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0.513726, 0.0117647, 1)
@@ -61,7 +74,7 @@ icon = ExtResource("3_qmu08")
 icon_alignment = 1
 vertical_icon_alignment = 0
 
-[node name="Blue_btn" type="Button" parent="CanvasLayer/MainUI/GridContainer"]
+[node name="Blue_btn" type="Button" parent="CanvasLayer/MainUI/ChoosedColor"]
 custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.176471, 0.533333, 0.819608, 1)
@@ -72,7 +85,7 @@ icon = ExtResource("4_spjvc")
 icon_alignment = 1
 vertical_icon_alignment = 0
 
-[node name="Black_btn" type="Button" parent="CanvasLayer/MainUI/GridContainer"]
+[node name="Black_btn" type="Button" parent="CanvasLayer/MainUI/ChoosedColor"]
 custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.113725, 0.113725, 0.113725, 1)
@@ -83,7 +96,159 @@ icon = ExtResource("5_drlo4")
 icon_alignment = 1
 vertical_icon_alignment = 0
 
-[connection signal="pressed" from="CanvasLayer/MainUI/GridContainer/Red_btn" to="." method="_on_red_btn_pressed"]
-[connection signal="pressed" from="CanvasLayer/MainUI/GridContainer/Green_btn" to="." method="_on_green_btn_pressed"]
-[connection signal="pressed" from="CanvasLayer/MainUI/GridContainer/Blue_btn" to="." method="_on_blue_btn_pressed"]
-[connection signal="pressed" from="CanvasLayer/MainUI/GridContainer/Black_btn" to="." method="_on_black_btn_pressed"]
+[node name="CreditBtn" type="Button" parent="CanvasLayer/MainUI"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.97
+anchor_right = 0.5
+anchor_bottom = 0.97
+offset_left = -63.5
+offset_top = -38.0
+offset_right = 63.5
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 21
+text = "credits"
+metadata/_edit_use_anchors_ = true
+
+[node name="CreditContent" type="MarginContainer" parent="CanvasLayer/MainUI"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+theme_override_constants/margin_left = 36
+theme_override_constants/margin_top = 36
+theme_override_constants/margin_right = 36
+theme_override_constants/margin_bottom = 36
+
+[node name="Credits" type="PanelContainer" parent="CanvasLayer/MainUI/CreditContent"]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MainUI/CreditContent/Credits"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MainUI/CreditContent/Credits/MarginContainer"]
+clip_contents = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 32
+
+[node name="Header" type="Label" parent="CanvasLayer/MainUI/CreditContent/Credits/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+text = "CREDITS"
+horizontal_alignment = 1
+vertical_alignment = 1
+clip_text = true
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/MainUI/CreditContent/Credits/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Header" type="Label" parent="CanvasLayer/MainUI/CreditContent/Credits/MarginContainer/VBoxContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 24
+text = "Sound effects obtained from 
+https://www.zapsplat.com"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LinkButton2" type="LinkButton" parent="CanvasLayer/MainUI/CreditContent/Credits/MarginContainer/VBoxContainer/VBoxContainer2"]
+layout_mode = 2
+text = "Aerosol, metal insect spray can, catch 1"
+underline = 1
+uri = "https://www.zapsplat.com/music/aerosol-metal-insect-spray-can-catch-1/"
+
+[node name="LinkButton3" type="LinkButton" parent="CanvasLayer/MainUI/CreditContent/Credits/MarginContainer/VBoxContainer/VBoxContainer2"]
+layout_mode = 2
+text = "Aerosol, metal insect spray can, catch 2"
+underline = 1
+uri = "https://www.zapsplat.com/music/aerosol-metal-insect-spray-can-catch-2/"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MainUI/CreditContent/Credits/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Header" type="Label" parent="CanvasLayer/MainUI/CreditContent/Credits/MarginContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 24
+text = "Background Music"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MainUI/CreditContent/Credits/MarginContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="CanvasLayer/MainUI/CreditContent/Credits/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 24
+text = "Jingle Bells by Kevin MacLeod |
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LinkButton4" type="LinkButton" parent="CanvasLayer/MainUI/CreditContent/Credits/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "https://incompetech.com/"
+underline = 1
+uri = "https://incompetech.com/"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/MainUI/CreditContent/Credits/MarginContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="CanvasLayer/MainUI/CreditContent/Credits/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 24
+text = "Music promoted by"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LinkButton4" type="LinkButton" parent="CanvasLayer/MainUI/CreditContent/Credits/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "https://www.chosic.com/free-music/all/"
+underline = 1
+uri = "https://www.chosic.com/free-music/all/"
+
+[node name="LinkButton5" type="LinkButton" parent="CanvasLayer/MainUI/CreditContent/Credits/MarginContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Creative Commons CC BY 3.0"
+underline = 1
+uri = "https://creativecommons.org/licenses/by/3.0/"
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="CanvasLayer/MainUI/CreditContent/Credits/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="LinkButton4" type="LinkButton" parent="CanvasLayer/MainUI/CreditContent/Credits/MarginContainer/VBoxContainer/VBoxContainer3"]
+layout_mode = 2
+theme_override_colors/font_hover_color = Color(1, 0.0235294, 0.458824, 1)
+text = "Art by Masuta"
+underline = 1
+
+[node name="BackBTN" type="Button" parent="CanvasLayer/MainUI/CreditContent/Credits/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 24
+text = "BACK"
+
+[connection signal="pressed" from="CanvasLayer/MainUI/ChoosedColor/Red_btn" to="." method="_on_red_btn_pressed"]
+[connection signal="pressed" from="CanvasLayer/MainUI/ChoosedColor/Green_btn" to="." method="_on_green_btn_pressed"]
+[connection signal="pressed" from="CanvasLayer/MainUI/ChoosedColor/Blue_btn" to="." method="_on_blue_btn_pressed"]
+[connection signal="pressed" from="CanvasLayer/MainUI/ChoosedColor/Black_btn" to="." method="_on_black_btn_pressed"]
+[connection signal="pressed" from="CanvasLayer/MainUI/CreditBtn" to="." method="_on_credit_btn_pressed"]
+[connection signal="pressed" from="CanvasLayer/MainUI/CreditContent/Credits/MarginContainer/VBoxContainer/BackBTN" to="." method="_on_back_btn_pressed"]

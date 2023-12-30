@@ -20,7 +20,6 @@ func _ready():
 func update_base_point():
 	base_sprite.flip_h = flip_h_sprite
 	if flip_h_sprite: spawn_pos.position.x *= -1
-	print(name, " " + str(spawn_pos.position.x))
 	match team:
 		CultTeam.Team.RED:
 			base_sprite.texture = PlayerSingleton.RED_BASE
@@ -35,22 +34,25 @@ func update_base_point():
 ### Spawn unit
 func finded_cult():
 	while  true:
+		if(game_manager.is_game_ended):
+			break
+		
 		check_and_callback()
 		await get_tree().create_timer(.2).timeout
 
 func check_and_callback():
 	match team:
 		CultTeam.Team.RED:
-			if(game_manager.red_cult_amount < game_manager.red_max_amout):
+			if(game_manager.red_cult_amount < game_manager.cur_red_max_amount):
 				spawn_unit_in_match(0)
 		CultTeam.Team.GREEN:
-			if(game_manager.green_cult_amount < game_manager.green_max_amout):
+			if(game_manager.green_cult_amount < game_manager.cur_green_max_amount):
 				spawn_unit_in_match(1)
 		CultTeam.Team.BLUE:
-			if(game_manager.blue_cult_amount < game_manager.blue_max_amout):
+			if(game_manager.blue_cult_amount < game_manager.cur_blue_max_amount):
 				spawn_unit_in_match(2)
 		CultTeam.Team.BLACK:
-			if(game_manager.black_cult_amount < game_manager.black_max_amout):
+			if(game_manager.black_cult_amount < game_manager.cur_black_max_amount):
 				spawn_unit_in_match(3)
 
 func spawn_unit_in_match(index: int):

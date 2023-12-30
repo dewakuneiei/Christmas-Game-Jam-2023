@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://dj80ityrieef6"]
+
+[ext_resource type="AudioStream" uid="uid://lovlqh864g3o" path="res://assets/sound/Jingle-Bells-3(chosic.com).mp3" id="1_no3o5"]
+
+[node name="BackgroundMusic" type="AudioStreamPlayer"]
+stream = ExtResource("1_no3o5")
+volume_db = -21.0
