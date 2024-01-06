@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://borqvqren78t5" path="res://assets/characters/Black.png" id="2_cuvo1"]
 
 [node name="Black" groups=["black"] instance=ExtResource("1_iejw6")]
-max_health = 50
+max_health = 44
 color_cult = Color(0.282353, 0.282353, 0.282353, 1)
 cult_team = 4
 

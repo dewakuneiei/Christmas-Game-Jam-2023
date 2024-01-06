@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://c86cguhw14cjg"]
+[gd_scene load_steps=19 format=3 uid="uid://c86cguhw14cjg"]
 
 [ext_resource type="Script" path="res://scripts/character.gd" id="1_4bwgc"]
 [ext_resource type="Texture2D" uid="uid://dqybskx0v6w75" path="res://icon.svg" id="1_yv33l"]
@@ -6,6 +6,19 @@
 [ext_resource type="Texture2D" uid="uid://c67wq841qd08s" path="res://assets/rect_under.png" id="4_w7wf4"]
 [ext_resource type="Texture2D" uid="uid://m0ldl3udo3j0" path="res://assets/rect_fill.png" id="5_7aix4"]
 [ext_resource type="Texture2D" uid="uid://dl0w4dpnngm58" path="res://assets/down_arrow.png" id="6_02x42"]
+
+[sub_resource type="Curve" id="Curve_ujbk1"]
+min_value = -360.0
+max_value = 360.0
+_data = [Vector2(0, 340.601), 0.0, 0.0, 0, 0, Vector2(1, -265.617), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_xtcn4"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -2.17677, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_wk3mu"]
+colors = PackedColorArray(1, 1, 1, 1, 0.564962, 0.564962, 0.564961, 1)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5u1q3"]
 size = Vector2(32, 32)
@@ -47,7 +60,7 @@ tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(0.12, 12),
+"transitions": PackedFloat32Array(0.111964, 12),
 "update": 0,
 "values": [0.0, -1.3439]
 }
@@ -59,7 +72,7 @@ tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(0.12, 12),
+"transitions": PackedFloat32Array(0.111964, 12),
 "update": 0,
 "values": [Vector2(0, -16), Vector2(0, 0.7)]
 }
@@ -128,6 +141,25 @@ position = Vector2(0, -16)
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("1_yv33l")
 
+[node name="SnowParticle" type="CPUParticles2D" parent="CharacterSprite"]
+unique_name_in_owner = true
+z_index = 100
+emitting = false
+amount = 12
+lifetime = 0.5
+one_shot = true
+explosiveness = 1.0
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 400.0
+initial_velocity_max = 500.0
+angle_max = 180.0
+angle_curve = SubResource("Curve_ujbk1")
+scale_amount_min = 6.0
+scale_amount_max = 12.0
+scale_amount_curve = SubResource("Curve_xtcn4")
+color_ramp = SubResource("Gradient_wk3mu")
+
 [node name="collis" type="CollisionShape2D" parent="."]
 position = Vector2(0, -16)
 shape = SubResource("RectangleShape2D_5u1q3")
@@ -167,11 +199,12 @@ libraries = {
 "": SubResource("AnimationLibrary_l4yaw")
 }
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="EnemyOverlapArea" type="Area2D" parent="."]
+unique_name_in_owner = true
 position = Vector2(0, -16)
 input_pickable = false
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyOverlapArea"]
 shape = SubResource("CircleShape2D_48o3k")
 debug_color = Color(0.619608, 0.52549, 0.313726, 0.419608)
 
@@ -203,7 +236,5 @@ volume_db = -12.0
 [connection signal="velocity_computed" from="NavAgent" to="." method="_on_nav_agent_velocity_computed"]
 [connection signal="timeout" from="ThrowSnowCooldown" to="." method="_on_throw_snow_cooldown_timeout"]
 [connection signal="animation_finished" from="playerAnim" to="." method="_on_player_anim_animation_finished"]
-[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
-[connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]
 [connection signal="mouse_entered" from="AreaDetectedMouse" to="." method="_on_area_detected_mouse_entered"]
 [connection signal="mouse_exited" from="AreaDetectedMouse" to="." method="_on_area_detected_mouse_exited"]

@@ -23,7 +23,9 @@ class_name Character
 @onready var _player_anim: AnimationPlayer = %playerAnim
 @onready var _selection_sprite: Sprite2D = %Selection
 @onready var _stream_player: AudioStreamPlayer2D = %StreamPlayer
+@onready var _enemy_overlap_area: Area2D = %EnemyOverlapArea
 
+@onready var _snow_particle:= %SnowParticle
 
 enum Action {
 	NONE,
@@ -93,6 +95,8 @@ func take_damage(amount: int):
 	_hp_bar.visible = true
 	_health = _health - amount
 	_hp_bar.value = _health
+	_snow_particle.emitting = true
+	
 	if(_health <= 0):
 		Died()
 
@@ -101,6 +105,7 @@ func Died():
 	_hp_bar.visible = false
 	_stream_player.stream = PADORU
 	_stream_player.play()
+	_player_anim.play("died")
 
 func set_ordering_index(index: int):
 	_character_sprite.z_index = index
@@ -108,6 +113,10 @@ func set_ordering_index(index: int):
 func _ready():
 	game_manager = GameManager.instance
 	
+	# Setup particle
+	_snow_particle.one_shot = true
+	
+	# Set character state
 	state_action = Action.NONE
 	_tree_target = null
 	_reset_selection()
@@ -161,10 +170,23 @@ func _seached_point():
 			_tree_target = point_is_not_cap[0]
 		
 
+func _is_enemy_overlap_area():
+	
+	var enemies = _enemy_overlap_area.get_overlapping_bodies() as Array[Character]
+	if( enemies.size() == 0):
+		_enemy_detected = null
+		return
+
+	for enemy in enemies:
+		if(enemy.cult_team != cult_team and not enemy.is_death()):
+			_enemy_detected = enemy
+			break;
+
 func _process(delta):
 	if(game_manager.is_game_ended):
 		return;
 	
+	_is_enemy_overlap_area()
 	
 	if( can_selected and 
 		Input.is_action_just_pressed("selected_unit") and 
@@ -179,10 +201,6 @@ func _process(delta):
 		not has_been_clicked):
 		_get_commander(get_global_mouse_position())
 	
-	
-	if(state_action == Action.DIED and not _player_anim.is_playing()):
-		_player_anim.play("died")
-		return;
 
 	if(_dir_to_target.x < 0):
 		_character_sprite.flip_h = true
@@ -251,13 +269,19 @@ func throw_snowball():
 	_can_throw = false
 	_time_cooldown.start()
 
+########################### status of character
 # for tree point checking only
 func change_state_to_capture() -> void:
 	state_action = Action.CAPTURING
-	
 
 func is_under_command() -> bool:
 	return state_action == Action.GET_COMMAND
+
+func is_fighting() -> bool:
+	return _enemy_detected != null
+
+func is_death() -> bool:
+	return state_action == Action.DIED
 
 func reset_target():
 	_tree_target = null
@@ -323,17 +347,6 @@ func _on_nav_agent_velocity_computed(safe_velocity):
 	move_and_slide()
 
 
-func _on_area_2d_body_entered(body):
-	if body is Character:
-		if (body.cult_team != cult_team and body.state_action != Action.DIED):
-			_enemy_detected = body
-		else:
-			_enemy_detected = null
-
-func _on_area_2d_body_exited(body):
-	if body is Character:
-		if body.cult_team != cult_team:
-			_enemy_detected = null
 
 
 func _on_throw_snow_cooldown_timeout():

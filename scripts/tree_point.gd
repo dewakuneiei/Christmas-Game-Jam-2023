@@ -74,7 +74,9 @@ func check_overlaping():
 			# change all action status of all unit is captured
 			if(_is_there_one_team):
 				for unit in characters:
-					if( not unit.is_under_command() and _territory_team != unit.cult_team):
+					if( not unit.is_under_command() and 
+						not unit.is_fighting() and
+						_territory_team != unit.cult_team ):
 						unit.change_state_to_capture()
 		await get_tree().create_timer(.2).timeout
 	
@@ -162,7 +164,8 @@ func get_territory_name() -> CultTeam.Team:
 
 func _on_entered_area_body_exited(body):
 	if body is Character:
-		body.reset_target()
+		if(not body.is_under_command()):
+			body.reset_target()
 
 
 func _on_upscore_cooldown_timeout():
