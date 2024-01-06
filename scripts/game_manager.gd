@@ -124,7 +124,7 @@ func _check_population():
 		cur_red_max_amount = floor(red_max_amount + (count_red_tree * 0.9))
 		cur_green_max_amount = floor(green_max_amount + (count_green_tree))
 		cur_blue_max_amount = floor(blue_max_amount + (count_blue_tree * 0.9))
-		cur_black_max_amount = floor(black_max_amount + (count_black_tree * .9))
+		cur_black_max_amount = floor(black_max_amount + (count_black_tree * .75))
 		
 		await get_tree().create_timer(.2).timeout
 

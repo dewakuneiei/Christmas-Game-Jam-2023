@@ -5,7 +5,6 @@
 
 [node name="Green" groups=["green"] instance=ExtResource("1_2jk8y")]
 max_health = 5
-strength = 1
 color_cult = Color(0, 0.835294, 0.0196078, 1)
 cult_team = 2
 

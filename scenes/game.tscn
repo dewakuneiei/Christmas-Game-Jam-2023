@@ -83,9 +83,8 @@ game_ui = NodePath("UI/ScoreBoard")
 parent_trees = NodePath("RootTree")
 game_ended_ui = NodePath("UI/GameEndCOntrol")
 red_max_amount = 4
-green_max_amount = 5
+green_max_amount = 4
 blue_max_amount = 4
-black_max_amount = 4
 end_at_point = 100
 metadata/_edit_lock_ = true
 
